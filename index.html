@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Welcome</title>
+
+    <!-- Included CSS Files (Compressed) -->
+    <link rel="stylesheet" href="stylesheets/foundation.min.css">
+    <link rel="stylesheet" href="stylesheets/app.css">
+
+    <script src="javascripts/modernizr.foundation.js"></script>
+</head>
+<body>
+
+<!-- Header and Nav -->
+<!-- End Header and Nav -->
+
+
+<!-- First Band (Slider) -->
+<!-- The Orbit slider is initialized at the bottom of the page by calling .orbit() on #slider -->
+
+<div class="row">
+    <div id="player" class="twelve columns"></div>
+    <hr />
+</div>
+
+<div class="row">
+    <div class="two columns">Youtube URL : </div>
+    <div class="eight columns"><input id="youtubeurl" type="text"/></div>
+    <div class="two columns"><a id="playButton" class="radius button" href="#">Radius</a></div>
+</div>
+
+<!-- Three-up Content Blocks -->
+
+<!--<div class="row">-->
+<!---->
+<!--<div class="four columns">-->
+<!--<img src="http://placehold.it/400x300&text=[img]" />-->
+<!--</div>-->
+<!---->
+<!--<div class="four columns">-->
+<!--<img src="http://placehold.it/400x300&text=[img]" />-->
+<!--</div>-->
+<!---->
+<!--<div class="four columns">-->
+<!--<img src="http://placehold.it/400x300&text=[img]" />-->
+<!--</div>-->
+<!--</div>-->
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="twelve columns">
+        <hr />
+        <div class="row">
+            <div class="six columns">
+                <p>&copy; Copyright no one at all. Go to town.</p>
+            </div>
+            <div class="six columns">
+                <ul class="link-list right">
+                    <li><a href="#">Link 1</a></li>
+                    <li><a href="#">Link 2</a></li>
+                    <li><a href="#">Link 3</a></li>
+                    <li><a href="#">Link 4</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+    tag.src = "//www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+            done = true;
+        }
+    }
+    function stopVideo() {
+        player.stopVideo();
+    }
+</script>
+
+<!-- Included JS Files (Uncompressed) -->
+<!--
+
+<script src="javascripts/jquery.js"></script>
+
+<script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+
+<script src="javascripts/jquery.foundation.forms.js"></script>
+
+<script src="javascripts/jquery.event.move.js"></script>
+
+<script src="javascripts/jquery.event.swipe.js"></script>
+
+<script src="javascripts/jquery.foundation.reveal.js"></script>
+
+<script src="javascripts/jquery.foundation.orbit.js"></script>
+
+<script src="javascripts/jquery.foundation.navigation.js"></script>
+
+<script src="javascripts/jquery.foundation.buttons.js"></script>
+
+<script src="javascripts/jquery.foundation.tabs.js"></script>
+
+<script src="javascripts/jquery.foundation.tooltips.js"></script>
+
+<script src="javascripts/jquery.foundation.accordion.js"></script>
+
+<script src="javascripts/jquery.placeholder.js"></script>
+
+<script src="javascripts/jquery.foundation.alerts.js"></script>
+
+<script src="javascripts/jquery.foundation.topbar.js"></script>
+
+<script src="javascripts/jquery.foundation.joyride.js"></script>
+
+<script src="javascripts/jquery.foundation.clearing.js"></script>
+
+<script src="javascripts/jquery.foundation.magellan.js"></script>
+
+-->
+
+<!-- Included JS Files (Compressed) -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script src="javascripts/foundation.min.js"></script>
+
+<!-- Initialize JS Plugins -->
+<script src="javascripts/app.js"></script>
+
+<script>
+    function parseYoutubeUrl(url){
+        var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match&&match[1].length==11){
+            return match[1];
+        }else{
+            alert("Invalid Youtube Url");
+        }
+    }
+    $(window).load(function() {
+        $("#playButton").click(function(){
+            youtubeVideoId = parseYoutubeUrl($("#youtubeurl").val());
+            player.loadVideoById(youtubeVideoId);
+        });
+    });
+</script>
+
+</body>
+</html>
