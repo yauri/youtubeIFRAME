@@ -14,7 +14,7 @@
     <title>Welcome</title>
 
     <!-- Included CSS Files (Compressed) -->
-    <link rel="stylesheet" href="stylesheets/foundation.min.css">
+    <link rel="stylesheet" href="stylesheets/foundation.css">
     <link rel="stylesheet" href="stylesheets/app.css">
 
     <script src="javascripts/modernizr.foundation.js"></script>
@@ -22,39 +22,62 @@
 <body>
 
 <!-- Header and Nav -->
+
+
+<div class="row">
+    <div class="five columns centered">
+        <h1><img src="http://placehold.it/400x100&text=Logo" /></h1>
+    </div>
+    <!--<div class="nine columns">-->
+        <!--<ul class="link-list right">-->
+            <!--<li><a href="#">Section 1</a></li>-->
+            <!--<li><a href="#">Section 2</a></li>-->
+            <!--<li><a href="#">Section 3</a></li>-->
+            <!--<li><a href="#">Section 4</a></li>-->
+        <!--</ul>-->
+    <!--</div>-->
+</div>
+
 <!-- End Header and Nav -->
 
-
-<!-- First Band (Slider) -->
-<!-- The Orbit slider is initialized at the bottom of the page by calling .orbit() on #slider -->
-
 <div class="row">
-    <div id="player" class="twelve columns"></div>
-    <hr />
+    <div class="seven columns offset-by-two">
+        <input id="youtubeurl" type="text" placeholder="Enter Youtube URL" value="http://www.youtube.com/watch?v=jzUsBUoaMNo" />
+    </div>
+    <div class="two columns pull-one">
+        <a id="playButton" class="radius button left" href="#">Start It!</a>
+    </div>
+    <!--<div class="twelve columns">-->
+    <!--<input id="youtubeurl" class="five" type="text" placeholder="Enter Youtube URL" />-->
+    <!--&lt;!&ndash;<a id="playButton" class="radius button" href="#">Start It!</a>&ndash;&gt;-->
+    <!--<buton>Start It!</buton>-->
+    <!--</div>-->
 </div>
 
 <div class="row">
-    <div class="two columns">Youtube URL : </div>
-    <div class="eight columns"><input id="youtubeurl" type="text"/></div>
-    <div class="two columns"><a id="playButton" class="radius button" href="#">Radius</a></div>
+    <div class="nine columns push-three">
+        <div class="flex-video">
+            <div id="player"></div>
+        </div>
+    </div>
+
+    <!-- Nav Sidebar -->
+    <!-- This is source ordered to be pulled to the left on larger screens -->
+    <div class="three columns pull-nine">
+        <div id="feed" class="panel callout radius">
+            <h5>Video Information</h5>
+            <ul class="side-nav">
+                <li>Title : <a href="#" id="videoTitle">-</a></li>
+                <li>Description : <a href="#" id="videoDescription">-</a></li>
+                <li>Duration : <a href="#" id="videoDuration">-</a></li>
+                <li>View : <a href="#" id="videoViewTimes">-</a> time(s)</li>
+                <li>Rating : <a href="#" id="videoRating">-</a> of 5</li>
+                <li>Like : <a href="#" id="videoLikeCount">-</a></li>
+            </ul>
+        </div>
+        <p><img src="http://placehold.it/320x240&text=Ad" /></p>
+    </div>
 </div>
-
-<!-- Three-up Content Blocks -->
-
-<!--<div class="row">-->
-<!---->
-<!--<div class="four columns">-->
-<!--<img src="http://placehold.it/400x300&text=[img]" />-->
-<!--</div>-->
-<!---->
-<!--<div class="four columns">-->
-<!--<img src="http://placehold.it/400x300&text=[img]" />-->
-<!--</div>-->
-<!---->
-<!--<div class="four columns">-->
-<!--<img src="http://placehold.it/400x300&text=[img]" />-->
-<!--</div>-->
-<!--</div>-->
 
 <!-- Footer -->
 
@@ -62,16 +85,8 @@
     <div class="twelve columns">
         <hr />
         <div class="row">
-            <div class="six columns">
-                <p>&copy; Copyright no one at all. Go to town.</p>
-            </div>
-            <div class="six columns">
-                <ul class="link-list right">
-                    <li><a href="#">Link 1</a></li>
-                    <li><a href="#">Link 2</a></li>
-                    <li><a href="#">Link 3</a></li>
-                    <li><a href="#">Link 4</a></li>
-                </ul>
+            <div class="twelve columns">
+                <p>&copy; Copyright no one at all.</p>
             </div>
         </div>
     </div>
@@ -87,8 +102,8 @@
     var player;
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
-            height: '390',
-            width: '640',
+            height: '340',
+            width: '520',
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
@@ -98,7 +113,8 @@
 
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
-        event.target.playVideo();
+//        event.target.playVideo();
+        setInterval(updatePlayerInfo, 250);
     }
 
     // 5. The API calls this function when the player's state changes.
@@ -109,10 +125,34 @@
         if (event.data == YT.PlayerState.PLAYING && !done) {
             done = true;
         }
+        else if(event.data == YT.PlayerState.ENDED) {
+            player.loadVideoById(parseYoutubeUrl($("#youtubeurl").val()));
+        }
     }
     function stopVideo() {
         player.stopVideo();
     }
+
+    // Display information about the current state of the player
+    function updatePlayerInfo() {
+        // Also check that at least one function exists since when IE unloads the
+        // page, it will destroy the SWF before clearing the interval.
+        if(player && player.getDuration) {
+//            updateHTML("playerState", player.getPlayerState());
+            updateHTML("videoDuration", player.getDuration());
+            updateHTML("videoCurrentTime", player.getCurrentTime());
+//            updateHTML("bytesTotal", player.getVideoBytesTotal());
+//            updateHTML("startBytes", player.getVideoStartBytes());
+//            updateHTML("bytesLoaded", player.getVideoBytesLoaded());
+            updateHTML("videoQuality", player.getPlaybackQuality());
+        }
+    }
+
+    // Update a particular HTML element with a new value
+    function updateHTML(elmId, value) {
+        document.getElementById(elmId).innerHTML = value;
+    }
+
 </script>
 
 <!-- Included JS Files (Uncompressed) -->
@@ -160,11 +200,13 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <script src="javascripts/foundation.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <!-- Initialize JS Plugins -->
 <script src="javascripts/app.js"></script>
 
 <script>
+    google.load("feeds", "1");
     function parseYoutubeUrl(url){
         var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
         var match = url.match(regExp);
@@ -178,6 +220,16 @@
         $("#playButton").click(function(){
             youtubeVideoId = parseYoutubeUrl($("#youtubeurl").val());
             player.loadVideoById(youtubeVideoId);
+
+            var youtubeFeed = "https://gdata.youtube.com/feeds/api/videos/";
+            $.getJSON(youtubeFeed + youtubeVideoId + "?v=2&alt=jsonc",function(response){
+                updateHTML("videoTitle", response.data.title);
+                updateHTML("videoDescription", response.data.description);
+                updateHTML("videoDuration", response.data.duration);
+                updateHTML("videoViewTimes", response.data.viewCount);
+                updateHTML("videoRating", response.data.rating);
+                updateHTML("videoLikeCount", response.data.likeCount);
+            });
         });
     });
 </script>
