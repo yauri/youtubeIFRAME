@@ -123,13 +123,7 @@
             alert("Invalid Youtube Url");
         }
     }
-    function secondToTimeFormat(seconds){
-        var d = new Date(0, 0, 0, 0, 0, second);
-        var hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours().toString();
-        var minutes = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes().toString();
-        var seconds = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds().toString();
-        return hours + ":" + minutes + ":" + seconds;
-    }
+    
     $(window).load(function() {
         $("#playButton").click(function(){
             youtubeVideoId = parseYoutubeUrl($("#youtubeurl").val());
