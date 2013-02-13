@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
@@ -7,38 +6,19 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-
-    <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width" />
-
     <title>Welcome</title>
-
-    <!-- Included CSS Files (Compressed) -->
     <link rel="stylesheet" href="stylesheets/foundation.css">
     <link rel="stylesheet" href="stylesheets/app.css">
-
     <script src="javascripts/modernizr.foundation.js"></script>
 </head>
 <body>
-
-<!-- Header and Nav -->
-
 
 <div class="row">
     <div class="five columns centered">
         <h1><img src="http://placehold.it/400x100&text=Logo" /></h1>
     </div>
-    <!--<div class="nine columns">-->
-        <!--<ul class="link-list right">-->
-            <!--<li><a href="#">Section 1</a></li>-->
-            <!--<li><a href="#">Section 2</a></li>-->
-            <!--<li><a href="#">Section 3</a></li>-->
-            <!--<li><a href="#">Section 4</a></li>-->
-        <!--</ul>-->
-    <!--</div>-->
 </div>
-
-<!-- End Header and Nav -->
 
 <div class="row">
     <div class="seven columns offset-by-two">
@@ -47,11 +27,6 @@
     <div class="two columns pull-one">
         <a id="playButton" class="radius button left" href="#">Start It!</a>
     </div>
-    <!--<div class="twelve columns">-->
-    <!--<input id="youtubeurl" class="five" type="text" placeholder="Enter Youtube URL" />-->
-    <!--&lt;!&ndash;<a id="playButton" class="radius button" href="#">Start It!</a>&ndash;&gt;-->
-    <!--<buton>Start It!</buton>-->
-    <!--</div>-->
 </div>
 
 <div class="row">
@@ -61,18 +36,17 @@
         </div>
     </div>
 
-    <!-- Nav Sidebar -->
-    <!-- This is source ordered to be pulled to the left on larger screens -->
     <div class="three columns pull-nine">
         <div id="feed" class="panel callout radius">
-            <h5>Video Information</h5>
+            <h5 style="color:white;">Video Information</h5>
+            <hr>
             <ul class="side-nav">
-                <li>Title : <a href="#" id="videoTitle">-</a></li>
-                <li>Description : <a href="#" id="videoDescription">-</a></li>
-                <li>Duration : <a href="#" id="videoDuration">-</a></li>
-                <li>View : <a href="#" id="videoViewTimes">-</a> time(s)</li>
-                <li>Rating : <a href="#" id="videoRating">-</a> of 5</li>
-                <li>Like : <a href="#" id="videoLikeCount">-</a></li>
+                <li><h6>Title : </h6><span id="videoTitle">-</span></li>
+                <li><h6>Description : </h6><span id="videoDescription">-</span></li>
+                <li><h6>Duration : </h6><span id="videoDuration">-</span></li>
+                <li><h6>View : </h6><span id="videoViewTimes">-</span></li>
+                <li><h6>Rating : </h6><span id="videoRating">-</span></li>
+                <li><h6>Like : </h6><span id="videoLikeCount">-</span></li>
             </ul>
         </div>
         <p><img src="http://placehold.it/320x240&text=Ad" /></p>
@@ -92,8 +66,17 @@
     </div>
 </footer>
 
+<!-- Included JS Files (Compressed) -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script src="javascripts/foundation.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<!-- Initialize JS Plugins -->
+<script src="javascripts/app.js"></script>
+
 <script>
-    // 2. This code loads the IFrame Player API code asynchronously.
+
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -111,18 +94,12 @@
         });
     }
 
-    // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
-//        event.target.playVideo();
         setInterval(updatePlayerInfo, 250);
     }
 
-    // 5. The API calls this function when the player's state changes.
-    //    The function indicates that when playing a video (state=1),
-    //    the player should play for six seconds and then stop.
-    var done = false;
     function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
+        if (event.data == YT.PlayerState.PLAYING) {
             done = true;
         }
         else if(event.data == YT.PlayerState.ENDED) {
@@ -133,80 +110,10 @@
         player.stopVideo();
     }
 
-    // Display information about the current state of the player
-    function updatePlayerInfo() {
-        // Also check that at least one function exists since when IE unloads the
-        // page, it will destroy the SWF before clearing the interval.
-        if(player && player.getDuration) {
-//            updateHTML("playerState", player.getPlayerState());
-            updateHTML("videoDuration", player.getDuration());
-            updateHTML("videoCurrentTime", player.getCurrentTime());
-//            updateHTML("bytesTotal", player.getVideoBytesTotal());
-//            updateHTML("startBytes", player.getVideoStartBytes());
-//            updateHTML("bytesLoaded", player.getVideoBytesLoaded());
-            updateHTML("videoQuality", player.getPlaybackQuality());
-        }
-    }
-
-    // Update a particular HTML element with a new value
     function updateHTML(elmId, value) {
         document.getElementById(elmId).innerHTML = value;
     }
 
-</script>
-
-<!-- Included JS Files (Uncompressed) -->
-<!--
-
-<script src="javascripts/jquery.js"></script>
-
-<script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-
-<script src="javascripts/jquery.foundation.forms.js"></script>
-
-<script src="javascripts/jquery.event.move.js"></script>
-
-<script src="javascripts/jquery.event.swipe.js"></script>
-
-<script src="javascripts/jquery.foundation.reveal.js"></script>
-
-<script src="javascripts/jquery.foundation.orbit.js"></script>
-
-<script src="javascripts/jquery.foundation.navigation.js"></script>
-
-<script src="javascripts/jquery.foundation.buttons.js"></script>
-
-<script src="javascripts/jquery.foundation.tabs.js"></script>
-
-<script src="javascripts/jquery.foundation.tooltips.js"></script>
-
-<script src="javascripts/jquery.foundation.accordion.js"></script>
-
-<script src="javascripts/jquery.placeholder.js"></script>
-
-<script src="javascripts/jquery.foundation.alerts.js"></script>
-
-<script src="javascripts/jquery.foundation.topbar.js"></script>
-
-<script src="javascripts/jquery.foundation.joyride.js"></script>
-
-<script src="javascripts/jquery.foundation.clearing.js"></script>
-
-<script src="javascripts/jquery.foundation.magellan.js"></script>
-
--->
-
-<!-- Included JS Files (Compressed) -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-<script src="javascripts/foundation.min.js"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
-<!-- Initialize JS Plugins -->
-<script src="javascripts/app.js"></script>
-
-<script>
-    google.load("feeds", "1");
     function parseYoutubeUrl(url){
         var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
         var match = url.match(regExp);
@@ -215,6 +122,13 @@
         }else{
             alert("Invalid Youtube Url");
         }
+    }
+    function secondToTimeFormat(seconds){
+        var d = new Date(0, 0, 0, 0, 0, second);
+        var hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours().toString();
+        var minutes = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes().toString();
+        var seconds = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds().toString();
+        return hours + ":" + minutes + ":" + seconds;
     }
     $(window).load(function() {
         $("#playButton").click(function(){
@@ -226,8 +140,8 @@
                 updateHTML("videoTitle", response.data.title);
                 updateHTML("videoDescription", response.data.description);
                 updateHTML("videoDuration", response.data.duration);
-                updateHTML("videoViewTimes", response.data.viewCount);
-                updateHTML("videoRating", response.data.rating);
+                updateHTML("videoViewTimes", response.data.viewCount + " time(s)");
+                updateHTML("videoRating", response.data.rating + " of 5");
                 updateHTML("videoLikeCount", response.data.likeCount);
             });
         });
