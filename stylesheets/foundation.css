@@ -1153,6 +1153,7 @@ table.show-for-xlarge, table.show-for-large, table.hide-for-small, table.hide-fo
   .nav-bar > li.has-flyout.is-touch > a.flyout-toggle span { content: ""; width: 0; height: 0; display: block; }
   .nav-bar > li.has-flyout > a.flyout-toggle:hover span { border-top-color: #141414; }
   .nav-bar.vertical > li.has-flyout > .flyout { left: 0; }
+  .nav-bar > li > input .input-text { display: inline-block; }
   .flyout { position: relative; width: 100% !important; top: auto; margin-right: -2px; border-width: 1px 1px 0 1px; }
   .flyout.right { float: none; right: auto; left: -1px; }
   .flyout.small, .flyout.large { width: 100% !important; }

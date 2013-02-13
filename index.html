@@ -13,21 +13,26 @@
     <script src="javascripts/modernizr.foundation.js"></script>
 </head>
 <body>
-
-<div class="row">
-    <div class="five columns centered">
-        <h1><img src="http://placehold.it/400x100&text=Logo" /></h1>
+<br>
+<div class="row text-center">
+    <div class="three columns">
+        <h3>Listen till you bored!</h3>
+    </div>
+    <div class="seven columns" >
+        <input id="youtubeurl" style="display:inline-block" type="text" placeholder="Enter Youtube URL" />
+    </div>
+    <div class="two columns">
+        <button class="button" id="playButton">Start It!</button>
     </div>
 </div>
-
-<div class="row">
-    <div class="seven columns offset-by-two">
-        <input id="youtubeurl" type="text" placeholder="Enter Youtube URL" value="http://www.youtube.com/watch?v=jzUsBUoaMNo" />
-    </div>
-    <div class="two columns pull-one">
-        <a id="playButton" class="radius button left" href="#">Start It!</a>
-    </div>
-</div>
+<!--<div class="row">-->
+    <!--<div class="seven columns offset-by-three">-->
+        <!--<input id="youtubeurl" type="text" placeholder="Enter Youtube URL" value="http://www.youtube.com/watch?v=jzUsBUoaMNo" />-->
+    <!--</div>-->
+    <!--<div class="two columns">-->
+        <!--<a id="playButton" class="radius button" href="#">Start It!</a>-->
+    <!--</div>-->
+<!--</div>-->
 
 <div class="row">
     <div class="nine columns push-three">
@@ -123,7 +128,7 @@
             alert("Invalid Youtube Url");
         }
     }
-    
+
     $(window).load(function() {
         $("#playButton").click(function(){
             youtubeVideoId = parseYoutubeUrl($("#youtubeurl").val());
