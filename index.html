@@ -10,6 +10,12 @@
     <title>Welcome</title>
     <link rel="stylesheet" href="stylesheets/foundation.css">
     <link rel="stylesheet" href="stylesheets/app.css">
+    <link rel="stylesheet" href="stylesheets/font-awesome.min.css">
+    <!--[if lt IE 8]><!-->
+    <link rel="stylesheet" href="stylesheets/font-awesome-ie7.min.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="stylesheets/responsive-tables.css">
+
     <script src="javascripts/modernizr.foundation.js"></script>
 </head>
 <body>
@@ -18,21 +24,15 @@
     <div class="three columns">
         <h3>Listen till you bored!</h3>
     </div>
-    <div class="seven columns" >
-        <input id="youtubeurl" style="display:inline-block" type="text" placeholder="Enter Youtube URL" />
+
+    <div class="seven columns text-right" >
+        <input id="youtubeurl" type="text" placeholder="Enter Youtube URL" />
     </div>
-    <div class="two columns">
-        <button class="button" id="playButton">Start It!</button>
+    <div class="two columns text-left">
+        <!--<button class="button" id="playButton">Start It!</button>-->
+        <a href="#" id="playButton"><i class="icon-play icon-3x"></i></a>
     </div>
 </div>
-<!--<div class="row">-->
-    <!--<div class="seven columns offset-by-three">-->
-        <!--<input id="youtubeurl" type="text" placeholder="Enter Youtube URL" value="http://www.youtube.com/watch?v=jzUsBUoaMNo" />-->
-    <!--</div>-->
-    <!--<div class="two columns">-->
-        <!--<a id="playButton" class="radius button" href="#">Start It!</a>-->
-    <!--</div>-->
-<!--</div>-->
 
 <div class="row">
     <div class="nine columns push-three">
@@ -43,8 +43,7 @@
 
     <div class="three columns pull-nine">
         <div id="feed" class="panel callout radius">
-            <h5 style="color:white;">Video Information</h5>
-            <hr>
+            <i class="icon-info-sign icon-2x"></i><span style="color:white;margin-left:7px;font-weight: bold;">Video Information</span>
             <ul class="side-nav">
                 <li><h6>Title : </h6><span id="videoTitle">-</span></li>
                 <li><h6>Description : </h6><span id="videoDescription">-</span></li>
@@ -54,7 +53,32 @@
                 <li><h6>Like : </h6><span id="videoLikeCount">-</span></li>
             </ul>
         </div>
-        <p><img src="http://placehold.it/320x240&text=Ad" /></p>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="two columns">
+        <label class="right inline"><h4>Search :</h4></label>
+    </div>
+    <div class="seven columns">
+        <input type="text" id="searchKeyword" placeholder="Enter Keyword"/>
+    </div>
+    <div class="three columns">
+        <a class="btn" href="#" id="searchButton">
+            <i class="icon-repeat icon-3x"></i> Search</a>
+    </div>
+</div>
+<div class="row">
+    <div class="twelve columns">
+        <table id="searchTable" class="responsive twelve">
+            <tr>
+                <td>Thumbnail</td>
+                <td>Title</td>
+                <td>Duration</td>
+                <td>Link</td>
+                <td>Play</td>
+            </tr>
+        </table>
     </div>
 </div>
 
@@ -75,13 +99,12 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <script src="javascripts/foundation.min.js"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
+<script src="javascripts/responsive-tables.js"></script>
 <!-- Initialize JS Plugins -->
 <script src="javascripts/app.js"></script>
 
 <script>
-
+    var youtubeApiUrl = "https://gdata.youtube.com/feeds/api/videos/";
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -100,7 +123,7 @@
     }
 
     function onPlayerReady(event) {
-        setInterval(updatePlayerInfo, 250);
+//        setInterval(updatePlayerInfo, 250);
     }
 
     function onPlayerStateChange(event) {
@@ -129,13 +152,37 @@
         }
     }
 
+    function searchVideo(keyword){
+        var searchQuery = "?v=2&alt=jsonc&orderby=published&q=" + keyword;
+        var searchTable = document.getElementById("searchTable");
+        $.getJSON(youtubeApiUrl + searchQuery,function(response){
+
+            for(var i=0; i<response.data.items.length; i++){
+                var rowCount = searchTable.rows.length;
+                var row = searchTable.insertRow(rowCount);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = response.data.items[i].thumbnail["sqDefault"];
+
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = response.data.items[i].title;
+
+                var cell3 = row.insertCell(2);
+                cell3.innerHTML = response.data.items[i].duration;
+
+                var cell4 = row.insertCell(3);
+                cell4.innerHTML = response.data.items[i].player["default"];
+
+                var cell5 = row.insertCell(4);
+                cell5.innerHTML = "PLAY";
+            }
+        });
+    }
+
     $(window).load(function() {
         $("#playButton").click(function(){
             youtubeVideoId = parseYoutubeUrl($("#youtubeurl").val());
             player.loadVideoById(youtubeVideoId);
-
-            var youtubeFeed = "https://gdata.youtube.com/feeds/api/videos/";
-            $.getJSON(youtubeFeed + youtubeVideoId + "?v=2&alt=jsonc",function(response){
+            $.getJSON(youtubeApiUrl + youtubeVideoId + "?v=2&alt=jsonc",function(response){
                 updateHTML("videoTitle", response.data.title);
                 updateHTML("videoDescription", response.data.description);
                 updateHTML("videoDuration", response.data.duration);
@@ -144,6 +191,9 @@
                 updateHTML("videoLikeCount", response.data.likeCount);
             });
         });
+        $("#searchButton").click(function(){
+            searchVideo($("#searchKeyword").val());
+        })
     });
 </script>
 
