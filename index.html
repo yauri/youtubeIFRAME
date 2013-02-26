@@ -29,7 +29,6 @@
         <input id="youtubeurl" type="text" placeholder="Enter Youtube URL" />
     </div>
     <div class="two columns text-left">
-        <!--<button class="button" id="playButton">Start It!</button>-->
         <a href="#" id="playButton"><i class="icon-play icon-3x"></i></a>
     </div>
 </div>
@@ -40,20 +39,6 @@
             <div id="player"></div>
         </div>
     </div>
-
-    <!--<div class="three columns pull-nine">-->
-        <!--<div id="feed" class="panel callout radius">-->
-            <!--<i class="icon-info-sign icon-2x"></i><span style="color:white;margin-left:7px;font-weight: bold;">Video Information</span>-->
-            <!--<ul class="side-nav">-->
-                <!--<li><h6>Title : </h6><span id="videoTitle">-</span></li>-->
-                <!--<li><h6>Description : </h6><span id="videoDescription">-</span></li>-->
-                <!--<li><h6>Duration : </h6><span id="videoDuration">-</span></li>-->
-                <!--<li><h6>View : </h6><span id="videoViewTimes">-</span></li>-->
-                <!--<li><h6>Rating : </h6><span id="videoRating">-</span></li>-->
-                <!--<li><h6>Like : </h6><span id="videoLikeCount">-</span></li>-->
-            <!--</ul>-->
-        <!--</div>-->
-    <!--</div>-->
 </div>
 <hr>
 <div class="row">
@@ -123,7 +108,6 @@
     }
 
     function onPlayerReady(event) {
-//        setInterval(updatePlayerInfo, 250);
     }
 
     function onPlayerStateChange(event) {
@@ -155,6 +139,7 @@
     function searchVideo(keyword){
         var searchQuery = "?v=2&alt=jsonc&orderby=published&q=" + keyword;
         var searchTable = document.getElementById("searchTable");
+        searchTable.innerHTML = "";
         $.getJSON(youtubeApiUrl + searchQuery,function(response){
 
             for(var i=0; i<response.data.items.length; i++){
@@ -173,7 +158,6 @@
                 cell4.innerHTML = "<a href=\"" + response.data.items[i].player["default"] + "\">Play on Youtube</a>";
 
                 var cell5 = row.insertCell(4);
-//                cell5.innerHTML = " <a href=\'#\' onclick=\'removeElement('+divIdName+')\'>Remove the div "'+divIdName+'"</a>";
                 cell5.innerHTML = "<button id=\"play"+i+"\">Play</button>";
                 $('#play'+i).attr('onclick','playFromSearchTable(\''+response.data.items[i].player["default"]+'\')');
             }
@@ -189,20 +173,9 @@
         $("#playButton").click(function(){
             youtubeVideoId = parseYoutubeUrl($("#youtubeurl").val());
             player.loadVideoById(youtubeVideoId);
-//            $.getJSON(youtubeApiUrl + youtubeVideoId + "?v=2&alt=jsonc",function(response){
-//                updateHTML("videoTitle", response.data.title);
-//                updateHTML("videoDescription", response.data.description);
-//                updateHTML("videoDuration", response.data.duration);
-//                updateHTML("videoViewTimes", response.data.viewCount + " time(s)");
-//                updateHTML("videoRating", response.data.rating + " of 5");
-//                updateHTML("videoLikeCount", response.data.likeCount);
-//            });
         });
         $("#searchButton").click(function(){
             searchVideo($("#searchKeyword").val());
-        })
-        $(":button").click(function(){
-            alert("hee");
         });
     });
 </script>
